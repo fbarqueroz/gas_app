@@ -39,6 +39,81 @@ Móvil, facturación electrónica y el resto de fases del roadmap.
   docker + docker-compose-plugin en Linux).
 - Nada más — Ruby, Postgres, Redis, todo vive dentro de los contenedores.
 
+## 🚀 Instalación y arranque local
+
+Requisito único: **Docker** (Ruby, PostgreSQL y Redis viven en contenedores, no hace falta instalarlos aparte).
+
+```bash
+git clone <URL_DEL_REPO>
+cd gekko-saas
+cp .env.example .env
+
+docker compose build
+docker compose run --rm app bin/rails db:prepare
+docker compose run --rm app bin/rails db:seed
+docker compose up
+```
+
+La app queda en **http://localhost:3000**.
+
+Usuario demo: `admin@grupogekko.cr` / `gekko1234`
+
+> 📖 Guía detallada de instalación por sistema operativo (con solución de problemas comunes): [`docs/INSTALL.md`](docs/INSTALL.md)
+
+<details>
+<summary><strong>🐧 Ubuntu / Linux</strong></summary>
+
+```bash
+curl -fsSL https://get.docker.com | sudo sh
+sudo usermod -aG docker $USER
+# cerrar sesión y volver a entrar
+
+docker --version
+docker compose version
+```
+
+Luego seguir los pasos de arriba (`git clone`, `.env`, `docker compose build/up`).
+
+**Problemas comunes:** `permission denied` → falta cerrar sesión tras agregar tu usuario al grupo `docker`. `Cannot connect to the Docker daemon` → `sudo systemctl start docker`.
+
+</details>
+
+<details>
+<summary><strong>🪟 Windows (WSL2)</strong></summary>
+
+1. En PowerShell (administrador): `wsl --install`
+2. Instalar [Docker Desktop](https://www.docker.com/products/docker-desktop/) con backend WSL2.
+3. Docker Desktop → **Settings → Resources → WSL Integration** → activar tu distro.
+4. Dentro de la terminal Ubuntu (WSL), trabajar en `~/proyectos` (no en `/mnt/c/...`) y seguir los pasos de arriba.
+
+Abrir `http://localhost:3000` desde el navegador de Windows funciona sin configuración extra.
+
+**Problemas comunes:** todo muy lento → el proyecto está en `/mnt/c/...`, moverlo a `~/`. `docker: command not found` → falta activar la integración WSL en Docker Desktop.
+
+</details>
+
+<details>
+<summary><strong>🍎 macOS</strong></summary>
+
+1. Instalar [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Apple Silicon o Intel, según tu chip).
+2. Abrir Docker Desktop y esperar a que el ícono de la ballena quede activo.
+3. Seguir los pasos de arriba (`git clone`, `.env`, `docker compose build/up`).
+
+**Problemas comunes:** `Cannot connect to the Docker daemon` → abrir Docker Desktop primero. Error de arquitectura en Apple Silicon → agregar `platform: linux/amd64` al servicio afectado en `docker-compose.yml`.
+
+</details>
+
+### Comandos útiles
+
+| Comando | Qué hace |
+|---|---|
+| `docker compose up -d` | Levanta todo en segundo plano |
+| `docker compose logs -f app` | Ver logs en vivo |
+| `docker compose down` | Apagar todo |
+| `docker compose down -v` | Apagar y borrar datos de la base |
+| `docker compose exec app bin/rails console` | Consola Rails |
+| `docker compose exec app bin/rails db:migrate` | Correr migraciones nuevas |
+
 ## Cómo levantarlo
 
 ```bash
