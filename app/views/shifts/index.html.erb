@@ -1,0 +1,35 @@
+<% content_for :page_title, "Turnos" %>
+
+<div class="mb-6 flex items-center justify-between">
+  <p class="text-sm text-gekko-gray-600"><%= pluralize(@shifts.count, "turno") %> recientes</p>
+  <%= link_to "+ Abrir turno", new_shift_path, class: "gk-btn-primary" %>
+</div>
+
+<div class="gk-card overflow-x-auto">
+  <table class="w-full text-left text-sm">
+    <thead>
+      <tr class="border-b border-gekko-gray-100 text-gekko-gray-600">
+        <th class="py-2 pr-4">Estación</th>
+        <th class="py-2 pr-4">Pistero</th>
+        <th class="py-2 pr-4">Apertura</th>
+        <th class="py-2 pr-4">Estado</th>
+        <th class="py-2"></th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gekko-gray-100">
+      <% @shifts.each do |shift| %>
+        <tr>
+          <td class="py-3 pr-4 font-medium text-gekko-black"><%= shift.station.name %></td>
+          <td class="py-3 pr-4"><%= shift.attendant.full_name %></td>
+          <td class="py-3 pr-4 text-gekko-gray-600"><%= shift.opened_at.strftime("%d/%m %H:%M") %></td>
+          <td class="py-3 pr-4">
+            <span class="<%= shift.open? ? 'gk-chip-green' : 'gk-chip-gray' %>"><%= shift.status.humanize %></span>
+          </td>
+          <td class="py-3 text-right">
+            <%= link_to "Ver", shift, class: "text-gekko-green font-semibold hover:underline" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,15 @@
+#!/bin/bash -e
+
+# Elimina un server.pid que pudiera haber quedado de un arranque previo
+if [ -f tmp/pids/server.pid ]; then
+  rm -f tmp/pids/server.pid
+fi
+
+# Si el comando es el servidor Rails, aseguramos que la base esté lista y
+# que el CSS de Tailwind esté compilado al menos una vez.
+if [ "${1}" == "bin/rails" ] && [ "${2}" == "server" ]; then
+  ./bin/rails db:prepare
+  ./bin/rails tailwindcss:build || true
+fi
+
+exec "${@}"

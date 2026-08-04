@@ -1,0 +1,14 @@
+<header class="flex items-center justify-between border-b border-gekko-gray-200 bg-white px-6 py-4 lg:px-10">
+  <div>
+    <h1 class="font-heading text-xl font-bold text-gekko-black"><%= yield :page_title if content_for?(:page_title) %></h1>
+    <% if current_account %>
+      <p class="text-sm text-gekko-gray-600"><%= current_account.name %></p>
+    <% end %>
+  </div>
+  <div class="flex items-center gap-3">
+    <span class="gk-chip-green"><%= current_user.role.humanize %></span>
+    <div class="flex h-9 w-9 items-center justify-center rounded-full bg-gekko-green-light font-semibold text-gekko-green-dark">
+      <%= current_user.full_name.to_s.first(1).upcase %>
+    </div>
+  </div>
+</header>

@@ -1,0 +1,42 @@
+<div class="flex min-h-screen items-center justify-center bg-gekko-black px-4">
+  <div class="w-full max-w-md">
+    <div class="mb-8 flex flex-col items-center gap-2 text-center">
+      <span class="flex h-16 w-16 items-center justify-center rounded-2xl bg-gekko-green text-3xl shadow-elevation-4">🦎</span>
+      <h1 class="font-heading text-2xl font-bold text-white">grupo <span class="text-gekko-green">gekko</span></h1>
+      <p class="text-sm text-white/60">Soluciones que se adaptan a ti</p>
+    </div>
+
+    <div class="gk-card">
+      <h2 class="mb-6 font-heading text-lg font-semibold text-gekko-black">Ingresar al panel</h2>
+
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="mb-4">
+          <%= f.label :email, "Correo", class: "gk-label" %>
+          <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "gk-field" %>
+        </div>
+
+        <div class="mb-2">
+          <%= f.label :password, "Contraseña", class: "gk-label" %>
+          <%= f.password_field :password, autocomplete: "current-password", class: "gk-field" %>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="mb-6 mt-3 flex items-center gap-2">
+            <%= f.check_box :remember_me, class: "rounded border-gekko-gray-200 text-gekko-green focus:ring-gekko-green" %>
+            <%= f.label :remember_me, "Recordarme", class: "text-sm text-gekko-gray-600" %>
+          </div>
+        <% end %>
+
+        <%= f.submit "Ingresar", class: "gk-btn-primary w-full" %>
+      <% end %>
+
+      <div class="mt-4 text-center">
+        <%= link_to "¿Olvidaste tu contraseña?", new_user_password_path, class: "text-sm text-gekko-gray-600 hover:text-gekko-green" %>
+      </div>
+    </div>
+
+    <p class="mt-6 text-center text-xs text-white/40">
+      Demo: admin@grupogekko.cr / gekko1234
+    </p>
+  </div>
+</div>

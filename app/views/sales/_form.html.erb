@@ -1,0 +1,25 @@
+<%= form_with model: Sale.new, url: shift_sales_path(shift), local: true do |f| %>
+  <div class="mb-3">
+    <%= f.label :product_id, "Producto", class: "gk-label" %>
+    <%= f.collection_select :product_id, shift.station.account.products, :id, :name, {}, class: "gk-field" %>
+  </div>
+  <div class="mb-3">
+    <%= f.label :service_point_id, "Surtidor", class: "gk-label" %>
+    <%= f.collection_select :service_point_id, shift.station.service_points, :id, :label, { include_blank: "—" }, class: "gk-field" %>
+  </div>
+  <div class="mb-3 grid grid-cols-2 gap-3">
+    <div>
+      <%= f.label :quantity, "Cantidad", class: "gk-label" %>
+      <%= f.number_field :quantity, step: "0.01", class: "gk-field" %>
+    </div>
+    <div>
+      <label class="gk-label">Precio unitario (₡)</label>
+      <input type="number" name="sale[unit_price_colones]" step="1" class="gk-field" placeholder="705">
+    </div>
+  </div>
+  <div class="mb-4">
+    <%= f.label :payment_method, "Método de pago", class: "gk-label" %>
+    <%= f.select :payment_method, [["Efectivo", "cash"], ["Tarjeta", "card"], ["Sinpe Móvil", "sinpe_movil"], ["Cuenta de crédito", "credit_account"]], {}, class: "gk-field" %>
+  </div>
+  <%= f.submit "Registrar venta", class: "gk-btn-primary w-full" %>
+<% end %>

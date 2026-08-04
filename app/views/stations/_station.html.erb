@@ -1,0 +1,14 @@
+<div class="gk-card">
+  <div class="mb-3 flex items-start justify-between">
+    <div>
+      <h3 class="font-heading text-lg font-semibold text-gekko-black"><%= station.name %></h3>
+      <p class="text-sm text-gekko-gray-600"><%= [station.canton, station.province].compact.join(", ") %></p>
+    </div>
+    <span class="gk-chip-green"><%= station.status.humanize %></span>
+  </div>
+  <p class="mb-4 text-sm text-gekko-gray-600"><%= station.address %></p>
+  <div class="flex items-center gap-3">
+    <%= link_to "Ver detalle", station, class: "gk-btn-secondary flex-1 text-sm py-2" %>
+    <%= link_to "Editar", edit_station_path(station), class: "text-sm font-semibold text-gekko-gray-600 hover:text-gekko-green" %>
+  </div>
+</div>

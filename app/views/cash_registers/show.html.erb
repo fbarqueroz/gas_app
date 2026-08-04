@@ -1,0 +1,14 @@
+<% content_for :page_title, "Corte de caja" %>
+<div class="max-w-md gk-card">
+  <dl class="space-y-2 text-sm">
+    <div class="flex justify-between"><dt>Estación</dt><dd class="font-medium"><%= @cash_register.shift.station.name %></dd></div>
+    <div class="flex justify-between"><dt>Pistero</dt><dd class="font-medium"><%= @cash_register.shift.attendant.full_name %></dd></div>
+    <div class="flex justify-between"><dt>Esperado</dt><dd>₡<%= number_with_delimiter(@cash_register.expected_cash_cents / 100) %></dd></div>
+    <div class="flex justify-between"><dt>Contado</dt><dd>₡<%= number_with_delimiter(@cash_register.counted_cash_cents / 100) %></dd></div>
+    <div class="flex justify-between font-semibold"><dt>Diferencia</dt>
+      <dd class="<%= @cash_register.balanced? ? 'text-gekko-green-dark' : 'text-red-600' %>">
+        ₡<%= number_with_delimiter(@cash_register.difference_cents / 100) %>
+      </dd>
+    </div>
+  </dl>
+</div>

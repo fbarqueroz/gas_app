@@ -1,0 +1,6 @@
+/*
+ * Con Propshaft no se necesitan directivas require/require_tree: cada
+ * archivo bajo app/assets/stylesheets se sirve de forma individual.
+ * El estilo principal de la app vive en application.tailwind.css
+ * (compilado por tailwindcss-rails a tailwind.css).
+ */

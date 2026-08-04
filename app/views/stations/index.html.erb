@@ -1,0 +1,12 @@
+<% content_for :page_title, "Estaciones" %>
+
+<div class="mb-6 flex items-center justify-between">
+  <p class="text-sm text-gekko-gray-600"><%= pluralize(@stations.count, "estación registrada", plural: "estaciones registradas") %></p>
+  <%= link_to "+ Nueva estación", new_station_path, class: "gk-btn-primary" %>
+</div>
+
+<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+  <% @stations.each do |station| %>
+    <%= render "station", station: station %>
+  <% end %>
+</div>

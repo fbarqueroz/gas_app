@@ -1,0 +1,30 @@
+<% content_for :page_title, "Cortes de caja" %>
+
+<div class="gk-card overflow-x-auto">
+  <table class="w-full text-left text-sm">
+    <thead>
+      <tr class="border-b border-gekko-gray-100 text-gekko-gray-600">
+        <th class="py-2 pr-4">Estación</th>
+        <th class="py-2 pr-4">Pistero</th>
+        <th class="py-2 pr-4">Esperado</th>
+        <th class="py-2 pr-4">Contado</th>
+        <th class="py-2 pr-4">Diferencia</th>
+        <th class="py-2"></th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gekko-gray-100">
+      <% @cash_registers.each do |cr| %>
+        <tr>
+          <td class="py-3 pr-4 font-medium text-gekko-black"><%= cr.shift.station.name %></td>
+          <td class="py-3 pr-4"><%= cr.shift.attendant.full_name %></td>
+          <td class="py-3 pr-4">₡<%= number_with_delimiter(cr.expected_cash_cents / 100) %></td>
+          <td class="py-3 pr-4">₡<%= number_with_delimiter(cr.counted_cash_cents / 100) %></td>
+          <td class="py-3 pr-4 font-semibold <%= cr.balanced? ? 'text-gekko-green-dark' : 'text-red-600' %>">
+            ₡<%= number_with_delimiter(cr.difference_cents / 100) %>
+          </td>
+          <td class="py-3 text-right"><%= link_to "Ver", cash_register_path(cr), class: "text-gekko-green font-semibold hover:underline" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

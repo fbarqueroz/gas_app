@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply font-sans text-gekko-ink;
+  }
+  body {
+    @apply bg-gekko-gray-50;
+  }
+}
+
+/* Componentes estilo Material Design, con la paleta de marca Grupo Gekko
+   (verde #2BAE66 / negro #000000 / blanco #FFFFFF). */
+@layer components {
+  /* Tarjeta base con elevación, como las "cards" de Material Design */
+  .gk-card {
+    @apply bg-white rounded-2xl shadow-elevation-2 p-6 transition-shadow duration-200;
+  }
+  .gk-card:hover {
+    @apply shadow-elevation-4;
+  }
+
+  /* Botón principal (filled), acento verde de marca */
+  .gk-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-gekko-green px-5 py-2.5
+           font-semibold text-white shadow-elevation-1 transition
+           hover:bg-gekko-green-dark hover:shadow-elevation-2
+           focus:outline-none focus:ring-2 focus:ring-gekko-green focus:ring-offset-2
+           disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  /* Botón secundario (outlined), estilo Material "text/outlined button" */
+  .gk-btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-gekko-black
+           px-5 py-2.5 font-semibold text-gekko-black transition
+           hover:bg-gekko-black hover:text-white
+           focus:outline-none focus:ring-2 focus:ring-gekko-black focus:ring-offset-2;
+  }
+
+  /* Botón de peligro (para acciones destructivas) */
+  .gk-btn-danger {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-red-500
+           px-4 py-2 text-sm font-semibold text-red-600 transition
+           hover:bg-red-500 hover:text-white;
+  }
+
+  /* Campo de formulario estilo Material (outlined) */
+  .gk-field {
+    @apply block w-full rounded-xl border border-gekko-gray-200 bg-white px-4 py-2.5
+           text-gekko-ink shadow-sm transition
+           focus:border-gekko-green focus:ring-2 focus:ring-gekko-green/30;
+  }
+  .gk-label {
+    @apply mb-1.5 block text-sm font-semibold text-gekko-gray-800;
+  }
+
+  /* Chip/etiqueta de estado */
+  .gk-chip {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold;
+  }
+  .gk-chip-green {
+    @apply gk-chip bg-gekko-green-light text-gekko-green-dark;
+  }
+  .gk-chip-gray {
+    @apply gk-chip bg-gekko-gray-100 text-gekko-gray-600;
+  }
+  .gk-chip-black {
+    @apply gk-chip bg-gekko-black text-white;
+  }
+
+  /* Ítem de navegación lateral */
+  .gk-nav-link {
+    @apply flex items-center gap-3 rounded-xl px-4 py-2.5 text-sm font-medium text-white/80
+           transition hover:bg-white/10 hover:text-white;
+  }
+  .gk-nav-link.active {
+    @apply bg-gekko-green text-white shadow-elevation-1;
+  }
+
+  /* Tarjeta KPI del dashboard */
+  .gk-kpi {
+    @apply gk-card flex flex-col gap-1;
+  }
+  .gk-kpi .gk-kpi-value {
+    @apply font-heading text-3xl font-bold text-gekko-black;
+  }
+  .gk-kpi .gk-kpi-label {
+    @apply text-sm font-medium text-gekko-gray-600;
+  }
+}

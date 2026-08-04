@@ -1,0 +1,81 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-gekko}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-gekko_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-gekko_saas_development}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-gekko}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      RAILS_ENV: ${RAILS_ENV:-development}
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER:-gekko}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-gekko_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-gekko_saas_development}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:-change_me_generate_with_rails_secret}
+      RAILS_LOG_TO_STDOUT: "true"
+    volumes:
+      - .:/app
+      - bundle_data:/usr/local/bundle
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+
+  # Se activa cuando se agregue procesamiento en background (conciliación
+  # Sinpe, reportes, notificaciones). Ya queda listo el servicio, solo hay
+  # que descomentarlo una vez que se agregue lógica a app/jobs.
+  # worker:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   command: bundle exec sidekiq
+  #   depends_on:
+  #     - db
+  #     - redis
+  #   environment:
+  #     RAILS_ENV: ${RAILS_ENV:-development}
+  #     DATABASE_HOST: db
+  #     REDIS_URL: ${REDIS_URL:-redis://redis:6379/0}
+  #   volumes:
+  #     - .:/app
+  #     - bundle_data:/usr/local/bundle
+
+volumes:
+  db_data:
+  redis_data:
+  bundle_data:

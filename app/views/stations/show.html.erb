@@ -1,0 +1,42 @@
+<% content_for :page_title, @station.name %>
+
+<div class="mb-6 flex items-center justify-between">
+  <span class="gk-chip-green"><%= @station.status.humanize %></span>
+  <div class="flex gap-3">
+    <%= link_to "Editar", edit_station_path(@station), class: "gk-btn-secondary" %>
+    <%= button_to "Eliminar", @station, method: :delete, form: { data: { turbo_confirm: "¿Eliminar esta estación?" } }, class: "gk-btn-danger" %>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+  <div class="gk-card lg:col-span-2">
+    <h2 class="mb-4 font-heading text-lg font-semibold text-gekko-black">Islas y surtidores</h2>
+
+    <% @islands.each do |island| %>
+      <div class="mb-4 rounded-xl border border-gekko-gray-100 p-4">
+        <div class="mb-2 flex items-center justify-between">
+          <h3 class="font-semibold text-gekko-black"><%= island.name %></h3>
+          <%= link_to "+ Surtidor", new_island_service_point_path(island), class: "text-sm font-semibold text-gekko-green hover:underline" %>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <% island.service_points.each do |sp| %>
+            <span class="gk-chip-gray">
+              <%= sp.label %> · <%= sp.kind == "ev_charger" ? "⚡ EV" : "⛽" %> · <%= sp.status.humanize %>
+            </span>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <%= link_to "+ Nueva isla", new_station_island_path(@station), class: "gk-btn-secondary" %>
+  </div>
+
+  <div class="gk-card">
+    <h2 class="mb-4 font-heading text-lg font-semibold text-gekko-black">Datos</h2>
+    <dl class="space-y-2 text-sm">
+      <div class="flex justify-between"><dt class="text-gekko-gray-600">Provincia</dt><dd class="font-medium"><%= @station.province %></dd></div>
+      <div class="flex justify-between"><dt class="text-gekko-gray-600">Cantón</dt><dd class="font-medium"><%= @station.canton %></dd></div>
+      <div class="flex justify-between"><dt class="text-gekko-gray-600">Dirección</dt><dd class="font-medium text-right"><%= @station.address %></dd></div>
+    </dl>
+  </div>
+</div>

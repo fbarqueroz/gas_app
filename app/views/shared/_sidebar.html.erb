@@ -1,0 +1,33 @@
+<aside class="hidden lg:flex w-64 flex-col bg-gekko-black px-4 py-6">
+  <div class="flex items-center gap-3 px-2 mb-8">
+    <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-gekko-green text-xl">🦎</span>
+    <div class="leading-tight">
+      <p class="font-heading text-lg font-bold text-white">grupo <span class="text-gekko-green">gekko</span></p>
+      <p class="text-[11px] uppercase tracking-wide text-white/50">Soluciones que se adaptan a ti</p>
+    </div>
+  </div>
+
+  <nav class="flex flex-col gap-1">
+    <%= link_to dashboard_path, class: "gk-nav-link #{'active' if current_page?(dashboard_path)}" do %>
+      <span>📊</span> Dashboard
+    <% end %>
+    <%= link_to stations_path, class: "gk-nav-link #{'active' if request.path.start_with?('/stations')}" do %>
+      <span>⛽</span> Estaciones
+    <% end %>
+    <%= link_to shifts_path, class: "gk-nav-link #{'active' if request.path.start_with?('/shifts')}" do %>
+      <span>🕒</span> Turnos
+    <% end %>
+    <%= link_to cash_registers_path, class: "gk-nav-link #{'active' if request.path.start_with?('/cash_registers')}" do %>
+      <span>💵</span> Cortes de caja
+    <% end %>
+    <%= link_to products_path, class: "gk-nav-link #{'active' if request.path.start_with?('/products')}" do %>
+      <span>🏷️</span> Productos
+    <% end %>
+  </nav>
+
+  <div class="mt-auto pt-6">
+    <%= button_to destroy_user_session_path, method: :delete, class: "w-full gk-nav-link justify-start" do %>
+      <span>🚪</span> Cerrar sesión
+    <% end %>
+  </div>
+</aside>

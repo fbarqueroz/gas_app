@@ -1,0 +1,20 @@
+<% content_for :page_title, "Productos" %>
+
+<div class="mb-6 flex items-center justify-between">
+  <p class="text-sm text-gekko-gray-600"><%= pluralize(@products.count, "producto") %></p>
+  <%= link_to "+ Nuevo producto", new_product_path, class: "gk-btn-primary" %>
+</div>
+
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  <% @products.each do |product| %>
+    <div class="gk-card">
+      <div class="mb-2 flex items-center justify-between">
+        <h3 class="font-semibold text-gekko-black"><%= product.name %></h3>
+        <span class="gk-chip-gray"><%= product.category.humanize %></span>
+      </div>
+      <p class="text-2xl font-bold text-gekko-black">₡<%= number_with_delimiter(product.base_price_cents / 100) %></p>
+      <p class="text-sm text-gekko-gray-600">por <%= product.unit %></p>
+      <%= link_to "Editar", edit_product_path(product), class: "mt-3 inline-block text-sm font-semibold text-gekko-green hover:underline" %>
+    </div>
+  <% end %>
+</div>

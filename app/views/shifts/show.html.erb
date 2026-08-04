@@ -1,0 +1,67 @@
+<% content_for :page_title, "Turno · #{@shift.station.name}" %>
+
+<div class="mb-6 flex items-center justify-between">
+  <div class="flex items-center gap-3">
+    <span class="<%= @shift.open? ? 'gk-chip-green' : 'gk-chip-gray' %>"><%= @shift.status.humanize %></span>
+    <span class="text-sm text-gekko-gray-600">Pistero: <%= @shift.attendant.full_name %></span>
+  </div>
+
+  <% if @shift.open? %>
+    <%= form_with url: close_shift_path(@shift), method: :patch, local: true, class: "flex items-end gap-2" do %>
+      <div>
+        <label class="gk-label">Efectivo contado (₡)</label>
+        <input type="number" name="counted_cash_cents_colones" class="gk-field w-40" placeholder="0" required>
+      </div>
+      <button type="submit" class="gk-btn-danger" data-turbo-confirm="¿Confirmar cierre de turno y arqueo de caja?">
+        Cerrar turno
+      </button>
+    <% end %>
+  <% end %>
+</div>
+
+<div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+  <div class="gk-card lg:col-span-2">
+    <h2 class="mb-4 font-heading text-lg font-semibold text-gekko-black">Ventas del turno</h2>
+
+    <table class="w-full text-left text-sm">
+      <thead>
+        <tr class="border-b border-gekko-gray-100 text-gekko-gray-600">
+          <th class="py-2 pr-4">Producto</th>
+          <th class="py-2 pr-4">Cantidad</th>
+          <th class="py-2 pr-4">Método</th>
+          <th class="py-2 text-right">Total</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gekko-gray-100">
+        <% @sales.each do |sale| %>
+          <tr>
+            <td class="py-2 pr-4"><%= sale.product.name %></td>
+            <td class="py-2 pr-4"><%= sale.quantity %> <%= sale.product.unit %></td>
+            <td class="py-2 pr-4"><span class="gk-chip-gray"><%= sale.payment_method.humanize %></span></td>
+            <td class="py-2 text-right font-medium">₡<%= number_with_delimiter(sale.total_cents / 100) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <p class="mt-4 text-right font-heading text-lg font-bold">
+      Total: ₡<%= number_with_delimiter(@shift.total_sales_cents / 100) %>
+    </p>
+  </div>
+
+  <% if @shift.open? %>
+    <div class="gk-card">
+      <h2 class="mb-4 font-heading text-lg font-semibold text-gekko-black">Registrar venta</h2>
+      <%= render "sales/form", shift: @shift %>
+    </div>
+  <% elsif @shift.cash_register %>
+    <div class="gk-card">
+      <h2 class="mb-4 font-heading text-lg font-semibold text-gekko-black">Arqueo de caja</h2>
+      <dl class="space-y-2 text-sm">
+        <div class="flex justify-between"><dt>Esperado</dt><dd>₡<%= number_with_delimiter(@shift.cash_register.expected_cash_cents / 100) %></dd></div>
+        <div class="flex justify-between"><dt>Contado</dt><dd>₡<%= number_with_delimiter(@shift.cash_register.counted_cash_cents / 100) %></dd></div>
+        <div class="flex justify-between font-semibold"><dt>Diferencia</dt><dd class="<%= @shift.cash_register.balanced? ? 'text-gekko-green-dark' : 'text-red-600' %>">₡<%= number_with_delimiter(@shift.cash_register.difference_cents / 100) %></dd></div>
+      </dl>
+    </div>
+  <% end %>
+</div>

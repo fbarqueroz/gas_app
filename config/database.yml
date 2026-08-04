@@ -1,0 +1,24 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV.fetch("DATABASE_HOST", "db") %>
+  port: <%= ENV.fetch("DATABASE_PORT", 5432) %>
+  username: <%= ENV.fetch("POSTGRES_USER", "gekko") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD", "gekko_dev_password") %>
+
+development:
+  <<: *default
+  database: <%= ENV.fetch("POSTGRES_DB", "gekko_saas_development") %>
+
+test:
+  <<: *default
+  database: <%= ENV.fetch("POSTGRES_DB", "gekko_saas") %>_test
+
+# En producción, si se define DATABASE_URL (por ejemplo apuntando a un
+# Postgres administrado gratuito tipo Supabase o Neon), Rails la usa
+# automáticamente y las claves de abajo quedan como respaldo.
+production:
+  <<: *default
+  database: <%= ENV.fetch("POSTGRES_DB", "gekko_saas_production") %>
+  url: <%= ENV["DATABASE_URL"] %>

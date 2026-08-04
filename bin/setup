@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+require "fileutils"
+
+APP_ROOT = File.expand_path("..", __dir__)
+
+def system!(*args)
+  system(*args, exception: true)
+end
+
+FileUtils.chdir APP_ROOT do
+  puts "== Instalando dependencias =="
+  system! "bundle check || bundle install"
+
+  puts "== Preparando base de datos =="
+  system! "bin/rails db:prepare"
+
+  puts "== Sembrando datos demo =="
+  system! "bin/rails db:seed"
+
+  puts "== Listo! Corré: docker compose up =="
+end

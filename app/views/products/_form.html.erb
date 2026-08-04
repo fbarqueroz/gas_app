@@ -1,0 +1,27 @@
+<div class="gk-card max-w-lg">
+  <%= form_with model: product, local: true do |f| %>
+    <div class="mb-4">
+      <%= f.label :name, "Nombre", class: "gk-label" %>
+      <%= f.text_field :name, class: "gk-field" %>
+    </div>
+    <div class="mb-4">
+      <%= f.label :category, "Categoría", class: "gk-label" %>
+      <%= f.select :category, [["Combustible", "fuel"], ["Recarga eléctrica", "ev_charge"], ["Tienda", "store"], ["Lavado", "car_wash"], ["Comida", "food"], ["Otro", "other"]], {}, class: "gk-field" %>
+    </div>
+    <div class="mb-4 grid grid-cols-2 gap-4">
+      <div>
+        <%= f.label :unit, "Unidad", class: "gk-label" %>
+        <%= f.text_field :unit, class: "gk-field", placeholder: "litro / kWh / unidad" %>
+      </div>
+      <div>
+        <label class="gk-label">Precio (₡)</label>
+        <input type="number" name="product[base_price_colones]" class="gk-field"
+               value="<%= product.base_price_cents.to_i / 100 if product.base_price_cents %>">
+      </div>
+    </div>
+    <div class="flex gap-3">
+      <%= f.submit "Guardar", class: "gk-btn-primary" %>
+      <%= link_to "Cancelar", products_path, class: "gk-btn-secondary" %>
+    </div>
+  <% end %>
+</div>
